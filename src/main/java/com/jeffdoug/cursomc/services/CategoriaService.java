@@ -9,22 +9,25 @@ import com.jeffdoug.cursomc.domain.Categoria;
 import com.jeffdoug.cursomc.repositories.CategoriaRepository;
 import com.jeffdoug.cursomc.services.exceptions.ObjectNotFoundException;
 
-
 @Service
 public class CategoriaService {
 
 	@Autowired
 	private CategoriaRepository repo;
 
-	public Categoria buscar(Integer id) throws ObjectNotFoundException {
+	public Categoria find(Integer id) throws ObjectNotFoundException {
 		Optional<Categoria> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
-	
+
 	public Categoria insert(Categoria obj) {
 		obj.setId(null);
 		return repo.save(obj);
 	}
 
+	public Categoria update(Categoria obj) {
+		find(obj.getId());
+		return repo.save(obj);
+	}
 }
